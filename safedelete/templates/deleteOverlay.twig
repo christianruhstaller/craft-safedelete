@@ -1,0 +1,68 @@
+<div class="body">
+    <form method="post">
+        <div class="content">
+            <div class="main">
+                <h2>{{ 'Element is still referenced'|t }}</h2>
+                <div class="description">{{ 'The selected element is still in use and can not be deleted just like that. Check the information below and decide wisely.'|t }}</div>
+                <div>
+                    <table class="data fullwidth">
+                        <thead>
+                        <tr>
+                            <th scope="col">
+                                {{ 'Element type'|t }}
+                            </th>
+                            <th scope="col">
+                                {{ 'Field'|t }}
+                            </th>
+                            <th scope="col">
+                                {{ 'Title'|t }}
+                            </th>
+                            <th scope="col">
+                                {{ 'Slug'|t }}
+                            </th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        {% for elements in relations %}
+                            {% for sourceElement in elements %}
+                                <tr>
+                                    {% if sourceElement.parent is not null %}
+                                        <td>{{ sourceElement.parent.elementType|t }} ({{ sourceElement.element.elementType|t }})</td>
+                                        <td>{{ sourceElement.field.name }} ({{ sourceElement.field.handle }})</td>
+                                        <td>
+                                            {% if sourceElement.editUrl is not null %}
+                                                <a href="{{ cpUrl()~sourceElement.editUrl }}" target="_blank">{{ sourceElement.parent.title }}</a>
+                                            {% else %}
+                                                {{ sourceElement.parent.title }}
+                                            {% endif %}
+                                        </td>
+                                        <td>{{ sourceElement.parent.slug }}</td>
+                                    {% else %}
+                                        <td>{{ sourceElement.element.elementType|t }}</td>
+                                        <td>{{ sourceElement.field.name }} ({{ sourceElement.field.handle }})</td>
+                                        <td>
+                                            {% if sourceElement.editUrl is not null %}
+                                                <a href="{{ cpUrl()~sourceElement.editUrl }}" target="_blank">{{ sourceElement.element.title }}</a>
+                                            {% else %}
+                                                {{ sourceElement.element.title }}
+                                            {% endif %}
+                                        </td>
+                                        <td>{{ sourceElement.element.slug }}</td>
+                                    {% endif %}
+                                </tr>
+                            {% endfor %}
+                        {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+                <div>
+                    <p>{{ 'WARNING! Deletion of referenced files can lead to unexpected consequences and errors in the frontend.'|t }}</p>
+                </div>
+            </div>
+        </div>
+        <div class="buttons right">
+            <input type="button" class="btn cancel" value="{{ 'Cancel'|t }}">
+            <input type="button" class="btn submit" value="{{ 'Continue'|t }}">
+        </div>
+    </form>
+</div>
