@@ -9,10 +9,12 @@ abstract class SafeDelete_BaseDeleteElementAction extends BaseElementAction
 
     public function getTriggerHtml()
     {
+        $settings = craft()->plugins->getPlugin('safeDelete')->getSettings();
         $confirmMessage = $this->getConfirmationMessage();
         $deletionType = $this->getDeletionType();
         $originalAction = $this->getOriginalAction();
         $deletionHandle = $this->getDeletionHandle();
+        $hideDefaultDeleteAction = $settings->hideDefaultDeleteAction ? 'true' : 'false';
 
         $js = <<<EOT
 (function()
@@ -59,7 +61,9 @@ abstract class SafeDelete_BaseDeleteElementAction extends BaseElementAction
 	});
 	
 	//remove default delete
-	 $('[data-action=$originalAction]').remove();
+	if($hideDefaultDeleteAction) {
+		 $('[data-action=$originalAction]').remove();
+	}
 })();
 EOT;
 

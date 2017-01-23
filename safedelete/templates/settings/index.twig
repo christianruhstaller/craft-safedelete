@@ -1,0 +1,21 @@
+{% import "_includes/forms" as forms %}
+{% set title = "Settings"|t %}
+
+ {{ forms.lightswitchField({
+     first: true,
+     label: 'Hide default delete action?'|t,
+     id: 'hideDefaultDeleteAction',
+     name: 'hideDefaultDeleteAction',
+     on: settings.hideDefaultDeleteAction,
+     onLabel: "On"|t,
+     offLabel: "Off"|t
+ }) }}
+
+ {{ forms.lightswitchField({
+     label: 'Allow force delete'|t,
+     id: 'allowForceDelete',
+     name: 'allowForceDelete',
+     on: settings.allowForceDelete,
+     onLabel: "On"|t,
+     offLabel: "Off"|t
+ }) }}

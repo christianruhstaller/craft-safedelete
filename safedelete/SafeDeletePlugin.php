@@ -40,6 +40,21 @@ class SafeDeletePlugin extends BasePlugin
         return 'http://goldinteractive.ch';
     }
 
+    protected function defineSettings()
+    {
+        return [
+            'hideDefaultDeleteAction' => [AttributeType::Bool, 'label' => 'Hide default delete action?', 'default' => true],
+            'allowForceDelete' => [AttributeType::Bool, 'label' => 'Allow force delete', 'default' => true],
+        ];
+    }
+
+    public function getSettingsHtml()
+    {
+        return craft()->templates->render('safeDelete/settings', [
+            'settings' => $this->getSettings()
+        ]);
+    }
+
     public function addAssetActions($source)
     {
         $actions = [];

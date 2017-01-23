@@ -62,7 +62,9 @@
         </div>
         <div class="buttons right">
             <input type="button" class="btn cancel" value="{{ 'Cancel'|t }}">
-            <input type="button" class="btn submit" value="{{ 'Continue'|t }}">
+            {% if allowForceDelete %}
+                <input type="button" class="btn submit" value="{{ 'Continue'|t }}">
+            {% endif %}
         </div>
     </form>
 </div>

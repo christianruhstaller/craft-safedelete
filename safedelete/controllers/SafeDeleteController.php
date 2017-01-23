@@ -8,13 +8,15 @@ class SafeDeleteController extends BaseController
         $ids = craft()->request->getPost('ids');
         $type = craft()->request->getPost('type');
 
+        $settings = craft()->plugins->getPlugin('safeDelete')->getSettings();
+
         $relations = craft()->safeDelete->getUsagesFor($ids, $type);
         
         if($relations === null || count($relations) === 0) { // safe to delete
 
             return $this->doAction($ids, $type);
         } else {
-            $html = craft()->templates->render('safeDelete/deleteOverlay', ['relations' => $relations]);
+            $html = craft()->templates->render('safeDelete/deleteOverlay', ['relations' => $relations, 'allowForceDelete' => (bool)$settings->allowForceDelete]);
 
             return $this->returnJson([
                 'html' => $html,
@@ -49,6 +51,15 @@ class SafeDeleteController extends BaseController
         $ids = craft()->request->getPost('ids');
         $type = craft()->request->getPost('type');
 
-        return $this->doAction($ids, $type);
+        $settings = craft()->plugins->getPlugin('safeDelete')->getSettings();
+
+        if($settings->allowForceDelete)  {
+
+            return $this->doAction($ids, $type);
+        }
+
+        return $this->returnJson([
+            'success'=> false,
+        ]);
     }
 }
