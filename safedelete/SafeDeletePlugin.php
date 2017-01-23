@@ -128,4 +128,27 @@ class SafeDeletePlugin extends BasePlugin
 
         return $actions;
     }
+
+    public function addCategoryActions($source)
+    {
+        $actions = [];
+
+        // Get the group we need to check permissions on
+        if (preg_match('/^group:(\d+)$/', $source, $matches))
+        {
+            $group = craft()->categories->getGroupById($matches[1]);
+        }
+
+        if (!empty($group))
+        {
+            // Delete
+            $action = craft()->elements->getAction('SafeDelete_Delete');
+            $action->setParams([
+                'label' => Craft::t('Safe Delete…'),
+            ]);
+            $actions[] = $action;
+        }
+
+        return $actions;
+    }
 }
