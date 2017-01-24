@@ -9,3 +9,4 @@ delivers you also a list of elements where it is referenced.
 ## ToDo
 
 - Reload overlay
+- Batch delete
