@@ -6,6 +6,9 @@ breaking frontend user experience and even introduce crashes to your site.
 If you try to delete an element which is still used you will be informed that the element is still referenced and it
 delivers you also a list of elements where it is referenced.
 
+For now the safe delete only works via the element index as an element action.
+In future release this should also work while in the edit view of an element.
+
 ## ToDo
 
-- deletion in edit entry
+- delete in edit entry
