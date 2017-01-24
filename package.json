@@ -1,6 +1,6 @@
 {
   "name": "craft-safedelete-plugin",
-  "version": "0.0.1",
+  "version": "0.1.0",
   "description": "A Craft CMS plugin for deleting entries, assets safely without having to think about existing relations.",
   "main": "webpack.config.js",
   "keywords": [
