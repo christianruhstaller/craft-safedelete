@@ -9,6 +9,12 @@ delivers you also a list of elements where it is referenced.
 For now the safe delete only works via the element index as an element action.
 In future release this should also work while in the edit view of an element.
 
+## Demo
+
+<img src="demo/feature-1.png" width="271">
+
+<img src="demo/feature-2.png" width="1341">
+
 ## ToDo
 
 - delete in edit entry
