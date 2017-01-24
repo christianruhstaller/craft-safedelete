@@ -9,7 +9,10 @@
                         <thead>
                         <tr>
                             <th scope="col">
-                                {{ 'Element type'|t }}
+                                {{ 'Source Element'|t }}
+                            </th>
+                            <th scope="col">
+                                {{ 'Reference element type'|t }}
                             </th>
                             <th scope="col">
                                 {{ 'Field'|t }}
@@ -26,6 +29,7 @@
                         {% for elements in relations %}
                             {% for sourceElement in elements %}
                                 <tr>
+                                    <td>{{ sourceElement.sourceElement.title }}</td>
                                     {% if sourceElement.parent is not null %}
                                         <td>{{ sourceElement.parent.elementType|t }} ({{ sourceElement.element.elementType|t }})</td>
                                         <td>{{ sourceElement.field.name }} ({{ sourceElement.field.handle }})</td>
@@ -55,10 +59,15 @@
                         </tbody>
                     </table>
                 </div>
-                <div>
-                    <p>{{ 'WARNING! Deletion of referenced files can lead to unexpected consequences and errors in the frontend.'|t }}</p>
-                </div>
+                {% if allowForceDelete %}
+                    <div>
+                        <p>{{ 'WARNING! Deletion of referenced files can lead to unexpected consequences and errors in the frontend.'|t }}</p>
+                    </div>
+                {% endif %}
             </div>
+        </div>
+        <div class="buttons left">
+            <input type="button" class="btn reload" value="{{ 'Reload'|t }}" />
         </div>
         <div class="buttons right">
             <input type="button" class="btn cancel" value="{{ 'Cancel'|t }}">

@@ -28,6 +28,8 @@ class SafeDeleteService extends BaseApplicationComponent
     {
         $arrReturn = [];
 
+        $sourceElement = craft()->elements->getElementById($id);
+
         $results = craft()->db->createCommand()->select('fieldId, sourceId')->from('relations')->where(
             'targetId = :targetId',
             ['targetId' => $id]
@@ -69,10 +71,11 @@ class SafeDeleteService extends BaseApplicationComponent
                 }
 
                 $arrReturn[] = [
-                    'field'   => $field,
-                    'element' => $element,
-                    'parent'  => $parent,
-                    'editUrl' => $editUrl,
+                    'sourceElement' => $sourceElement,
+                    'field'         => $field,
+                    'element'       => $element,
+                    'parent'        => $parent,
+                    'editUrl'       => $editUrl,
                 ];
             }
         }

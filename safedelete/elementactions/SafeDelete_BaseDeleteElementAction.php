@@ -21,7 +21,7 @@ abstract class SafeDelete_BaseDeleteElementAction extends BaseElementAction
 {
 	var trigger = new Craft.ElementActionTrigger({
 		handle: '$deletionHandle',
-		batch: false,
+		batch: true,
 		validateSelection: function(\$selectedItems)
 		{
 			return true;
@@ -35,27 +35,37 @@ abstract class SafeDelete_BaseDeleteElementAction extends BaseElementAction
                     var \$el = \$(el);
                     ids.push(\$el.data('id'));
                 });
-                
-                Craft.postActionRequest('safeDelete/tryDelete', {'ids': ids, type: '$deletionType'}, function(res) {
-                    if(res.success && res.html) {
-                       var \$html = $('<div class="modal">'+res.html+'</div>'),
-                       modal = new Garnish.Modal(\$html);
-                       
-                       
-                       \$html.find('.cancel').on('click', function() {
-                        modal.hide();
-                       });
-                       
-                       \$html.find('.submit').on('click', function() {
-                           Craft.postActionRequest('safeDelete/forceDelete', {'ids': ids, type: '$deletionType'}, function(res) {
-                                Craft.elementIndex.updateElements();
-                                modal.hide();
+                                
+                var doAction = function(ids) {
+                      Craft.postActionRequest('safeDelete/tryDelete', {'ids': ids, type: '$deletionType'}, function(res) {
+                        if(res.success && res.html) {
+                           var \$html = $('<div class="modal">'+res.html+'</div>'),
+                           modal = new Garnish.Modal(\$html);
+                           
+                           
+                           \$html.find('.cancel').on('click', function() {
+                            modal.hide();
                            });
-                       });
-                    } else if(res.success) {
-                        Craft.elementIndex.updateElements();
-                    }
-                })
+                           
+                           \$html.find('.submit').on('click', function() {
+                               Craft.postActionRequest('safeDelete/forceDelete', {'ids': ids, type: '$deletionType'}, function(res) {
+                                    Craft.elementIndex.updateElements();
+                                    modal.hide();
+                               });
+                           });
+                           
+                           \$html.find('.reload').on('click', function() {
+                            modal.hide();
+                            doAction(ids);
+                           });
+                           
+                        } else if(res.success) {
+                            Craft.elementIndex.updateElements();
+                        }
+                    });
+                }
+                
+                doAction(ids);
 		    }
 		}
 	});
