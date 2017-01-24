@@ -3,7 +3,7 @@
         <div class="content">
             <div class="main">
                 <h2>{{ 'Element is still referenced'|t }}</h2>
-                <div class="description">{{ 'The selected element is still in use and can not be deleted just like that. Check the information below and decide wisely.'|t }}</div>
+                <div class="description">{{ 'The selected element is still in use and can not be deleted just like that.'|t }}</div>
                 <div>
                     <table class="data fullwidth">
                         <thead>
@@ -60,9 +60,7 @@
                     </table>
                 </div>
                 {% if allowForceDelete %}
-                    <div>
-                        <p>{{ 'WARNING! Deletion of referenced files can lead to unexpected consequences and errors in the frontend.'|t }}</p>
-                    </div>
+                    <p style="margin-top: 20px;">{{ 'WARNING! Deletion of referenced elements can lead to unexpected consequences and errors in the frontend.'|t }}</p>
                 {% endif %}
             </div>
         </div>
