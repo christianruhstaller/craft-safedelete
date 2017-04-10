@@ -43,24 +43,30 @@ class SafeDeletePlugin extends BasePlugin
     protected function defineSettings()
     {
         return [
-            'hideDefaultDeleteAction' => [AttributeType::Bool, 'label' => 'Hide default delete action?', 'default' => true],
-            'allowForceDelete' => [AttributeType::Bool, 'label' => 'Allow force delete', 'default' => true],
+            'hideDefaultDeleteAction' => [
+                AttributeType::Bool,
+                'label' => 'Hide default delete action?',
+                'default' => true,
+            ],
+            'allowForceDelete'        => [AttributeType::Bool, 'label' => 'Allow force delete', 'default' => true],
         ];
     }
 
     public function getSettingsHtml()
     {
-        return craft()->templates->render('safeDelete/settings', [
-            'settings' => $this->getSettings()
-        ]);
+        return craft()->templates->render(
+            'safeDelete/settings',
+            [
+                'settings' => $this->getSettings(),
+            ]
+        );
     }
 
     public function addAssetActions($source)
     {
         $actions = [];
 
-        if (preg_match('/^folder:(\d+)$/', $source, $matches))
-        {
+        if (preg_match('/^folder:(\d+)$/', $source, $matches)) {
             $folderId = $matches[1];
 
             if (craft()->assets->canUserPerformAction($folderId, 'removeFromAssetSource')) {
@@ -81,41 +87,18 @@ class SafeDeletePlugin extends BasePlugin
     public function addEntryActions($source)
     {
         $actions = [];
+        $section = null;
 
-        // Get the section(s) we need to check permissions on
-        switch ($source)
-        {
-            case '*':
-            {
-                $sections = craft()->sections->getEditableSections();
-                break;
-            }
-            case 'singles':
-            {
-                $sections = craft()->sections->getSectionsByType(SectionType::Single);
-                break;
-            }
-            default:
-            {
-                if (preg_match('/^section:(\d+)$/', $source, $matches))
-                {
-                    $section = craft()->sections->getSectionById($matches[1]);
-
-                    if ($section)
-                    {
-                        $sections = array($section);
-                    }
-                }
-            }
+        if (preg_match('/^section:(\d+)$/', $source, $matches)) {
+            $section = craft()->sections->getSectionById($matches[1]);
         }
 
         $userSessionService = craft()->userSession;
 
-        if (
+        if ($section !== null &&
             $userSessionService->checkPermission('deleteEntries:'.$section->id) &&
             $userSessionService->checkPermission('deletePeerEntries:'.$section->id)
-        )
-        {
+        ) {
             $action = craft()->elements->getAction('SafeDelete_Delete');
 
             $action->setParams(
@@ -134,18 +117,18 @@ class SafeDeletePlugin extends BasePlugin
         $actions = [];
 
         // Get the group we need to check permissions on
-        if (preg_match('/^group:(\d+)$/', $source, $matches))
-        {
+        if (preg_match('/^group:(\d+)$/', $source, $matches)) {
             $group = craft()->categories->getGroupById($matches[1]);
         }
 
-        if (!empty($group))
-        {
+        if (!empty($group)) {
             // Delete
             $action = craft()->elements->getAction('SafeDelete_Delete');
-            $action->setParams([
-                'label' => Craft::t('Safe Delete…'),
-            ]);
+            $action->setParams(
+                [
+                    'label' => Craft::t('Safe Delete…'),
+                ]
+            );
             $actions[] = $action;
         }
 
