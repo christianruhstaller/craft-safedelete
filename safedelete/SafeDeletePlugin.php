@@ -48,7 +48,7 @@ class SafeDeletePlugin extends BasePlugin
                 'label' => 'Hide default delete action?',
                 'default' => true,
             ],
-            'allowForceDelete'        => [AttributeType::Bool, 'label' => 'Allow force delete', 'default' => true],
+            'allowForceDelete'        => [AttributeType::Bool, 'label' => 'Allow force delete', 'default' => false],
         ];
     }
 
