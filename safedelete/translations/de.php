@@ -8,5 +8,7 @@ return [
     'Reference element type' => 'Referenzierter Elementtyp',
     'Field' => 'Feld',
     'Source Element' => 'Quellelement',
-    'WARNING! Deletion of referenced elements can lead to unexpected consequences and errors in the frontend.' => 'WARNUNG! Das Löschen von Elementen welche verwendet werden kann zu Fehlern im Frontend führen.'
+    'WARNING! Deletion of referenced elements can lead to unexpected consequences and errors in the frontend.' => 'WARNUNG! Das Löschen von Elementen welche verwendet werden kann zu Fehlern im Frontend führen.',
+    'Delete all elements' => 'Lösche alle Elemente',
+    'Delete unreferenced elements' => 'Lösche nicht referenzierte Elemente',
 ];

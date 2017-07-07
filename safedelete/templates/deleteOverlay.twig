@@ -31,11 +31,14 @@
                                 <tr>
                                     <td>{{ sourceElement.sourceElement.title }}</td>
                                     {% if sourceElement.parent is not null %}
-                                        <td>{{ sourceElement.parent.elementType|t }} ({{ sourceElement.element.elementType|t }})</td>
+                                        <td>{{ sourceElement.parent.elementType|t }}
+                                            ({{ sourceElement.element.elementType|t }})
+                                        </td>
                                         <td>{{ sourceElement.field.name }} ({{ sourceElement.field.handle }})</td>
                                         <td>
                                             {% if sourceElement.editUrl is not null %}
-                                                <a href="{{ cpUrl()~sourceElement.editUrl }}" target="_blank">{{ sourceElement.parent.title }}</a>
+                                                <a href="{{ cpUrl()~sourceElement.editUrl }}"
+                                                   target="_blank">{{ sourceElement.parent.title }}</a>
                                             {% else %}
                                                 {{ sourceElement.parent.title }}
                                             {% endif %}
@@ -46,7 +49,8 @@
                                         <td>{{ sourceElement.field.name }} ({{ sourceElement.field.handle }})</td>
                                         <td>
                                             {% if sourceElement.editUrl is not null %}
-                                                <a href="{{ cpUrl()~sourceElement.editUrl }}" target="_blank">{{ sourceElement.element.title }}</a>
+                                                <a href="{{ cpUrl()~sourceElement.editUrl }}"
+                                                   target="_blank">{{ sourceElement.element.title }}</a>
                                             {% else %}
                                                 {{ sourceElement.element.title }}
                                             {% endif %}
@@ -60,18 +64,20 @@
                     </table>
                 </div>
                 {% if allowForceDelete %}
-                    <p style="margin-top: 20px;">{{ 'WARNING! Deletion of referenced elements can lead to unexpected consequences and errors in the frontend.'|t }}</p>
+                    <p style="margin-top: 20px;">
+                        <input type="button" class="btn submit" value="{{ 'Delete all elements'|t }}">
+                    </p>
+                    <p style="margin-top: 10px;">{{ 'WARNING! Deletion of referenced elements can lead to unexpected consequences and errors in the frontend.'|t }}</p>
                 {% endif %}
             </div>
         </div>
         <div class="buttons left">
-            <input type="button" class="btn reload" value="{{ 'Reload'|t }}" />
+            <input type="button" class="btn reload" value="{{ 'Reload'|t }}"/>
         </div>
         <div class="buttons right">
             <input type="button" class="btn cancel" value="{{ 'Cancel'|t }}">
-            {% if allowForceDelete %}
-                <input type="button" class="btn submit" value="{{ 'Continue'|t }}">
-            {% endif %}
+            <input type="button" class="btn submit" name="deleteUnreferencedElements"
+                   value="{{ 'Delete unreferenced elements'|t }}">
         </div>
     </form>
 </div>

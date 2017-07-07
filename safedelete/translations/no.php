@@ -8,5 +8,7 @@ return [
     'Reference element type' => 'Referert element type',
     'Field' => 'Felt',
     'Source Element' => 'Kildeelement',
-    'WARNING! Deletion of referenced elements can lead to unexpected consequences and errors in the frontend.' => 'ADVARSEL! Sletting av refererte elementer kan føre til uforutsette hendelser på selve siden.'
+    'WARNING! Deletion of referenced elements can lead to unexpected consequences and errors in the frontend.' => 'ADVARSEL! Sletting av refererte elementer kan føre til uforutsette hendelser på selve siden.',
+    'Delete all elements' => 'Delete all elements',
+    'Delete unreferenced elements' => 'Delete unreferenced elements',
 ];
