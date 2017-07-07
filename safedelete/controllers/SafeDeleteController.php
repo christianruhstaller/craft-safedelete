@@ -1,4 +1,5 @@
 <?php
+
 namespace Craft;
 
 class SafeDeleteController extends BaseController
@@ -11,17 +12,22 @@ class SafeDeleteController extends BaseController
         $settings = craft()->plugins->getPlugin('safeDelete')->getSettings();
 
         $relations = craft()->safeDelete->getUsagesFor($ids, $type);
-        
-        if($relations === null || count($relations) === 0) { // safe to delete
+
+        if ($relations === null || count($relations) === 0) { // safe to delete
 
             return $this->doAction($ids, $type);
         } else {
-            $html = craft()->templates->render('safeDelete/deleteOverlay', ['relations' => $relations, 'allowForceDelete' => (bool)$settings->allowForceDelete]);
+            $html = craft()->templates->render(
+                'safeDelete/deleteOverlay',
+                ['relations' => $relations, 'allowForceDelete' => (bool)$settings->allowForceDelete]
+            );
 
-            return $this->returnJson([
-                'html' => $html,
-                'success'=> true,
-            ]);
+            return $this->returnJson(
+                [
+                    'html'    => $html,
+                    'success' => true,
+                ]
+            );
         }
     }
 
@@ -29,7 +35,7 @@ class SafeDeleteController extends BaseController
     {
         $message = '';
 
-        switch($type) {
+        switch ($type) {
             case 'asset':
                 craft()->assets->deleteFiles($ids);
                 $message = Craft::t('Assets deleted.');
@@ -40,10 +46,12 @@ class SafeDeleteController extends BaseController
                 break;
         }
 
-        return $this->returnJson([
-            'success'=> true,
-            'message' => $message,
-        ]);
+        return $this->returnJson(
+            [
+                'success' => true,
+                'message' => $message,
+            ]
+        );
     }
 
     public function actionForceDelete()
@@ -53,13 +61,25 @@ class SafeDeleteController extends BaseController
 
         $settings = craft()->plugins->getPlugin('safeDelete')->getSettings();
 
-        if($settings->allowForceDelete)  {
+        if ($settings->allowForceDelete) {
 
             return $this->doAction($ids, $type);
         }
 
-        return $this->returnJson([
-            'success'=> false,
-        ]);
+        return $this->returnJson(
+            [
+                'success' => false,
+            ]
+        );
+    }
+
+    public function actionDeleteUnreferenced()
+    {
+        $ids = craft()->request->getPost('ids');
+        $type = craft()->request->getPost('type');
+
+        $ids = craft()->safeDelete->filterReferencedIds($ids, $type);
+
+        return $this->doAction($ids, $type);
     }
 }

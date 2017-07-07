@@ -65,7 +65,7 @@
                 </div>
                 {% if allowForceDelete %}
                     <p style="margin-top: 20px;">
-                        <input type="button" class="btn submit" value="{{ 'Delete all elements'|t }}">
+                        <input type="button" class="btn submit" name="forceDelete" value="{{ 'Delete all elements'|t }}">
                     </p>
                     <p style="margin-top: 10px;">{{ 'WARNING! Deletion of referenced elements can lead to unexpected consequences and errors in the frontend.'|t }}</p>
                 {% endif %}

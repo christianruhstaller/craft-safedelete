@@ -47,8 +47,15 @@ abstract class SafeDelete_BaseDeleteElementAction extends BaseElementAction
                             modal.hide();
                            });
                            
-                           \$html.find('.submit').on('click', function() {
+                           \$html.find('.submit[name=forceDelete]').on('click', function() {
                                Craft.postActionRequest('safeDelete/forceDelete', {'ids': ids, type: '$deletionType'}, function(res) {
+                                    Craft.elementIndex.updateElements();
+                                    modal.hide();
+                               });
+                           });
+                           
+                           \$html.find('.submit[name=deleteUnreferencedElements]').on('click', function() {
+                               Craft.postActionRequest('safeDelete/deleteUnreferenced', {'ids': ids, type: '$deletionType'}, function(res) {
                                     Craft.elementIndex.updateElements();
                                     modal.hide();
                                });
