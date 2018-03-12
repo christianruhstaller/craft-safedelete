@@ -79,12 +79,17 @@ class SafeDeleteService extends BaseApplicationComponent
                 switch ($elementType) {
                     case 'MatrixBlock':
                         $matrix = craft()->matrix->getBlockById($sourceId);
-                        $parent = $matrix->getOwner();
+                        $parent = $this->getTopOwner($matrix);
                         break;
                     case 'Neo_Block':
                         $neo = craft()->neo->getBlockById($sourceId);
-                        $parent = $neo->getOwner();
+                        $parent = $this->getTopOwner($neo);
                         break;
+                }
+
+                // if the element is referenced but not used in any entry, continue
+                if (($elementType == 'MatrixBlock' || $elementType == 'NeoBlock') && !$parent) {
+                    continue;
                 }
 
                 $edit = $element;
@@ -92,12 +97,10 @@ class SafeDeleteService extends BaseApplicationComponent
                     $edit = $parent;
                 }
 
-                if ($edit !== null) {
-                    switch ($edit->getElementType()) {
-                        case 'Entry':
-                            $editUrl = '/entries/'.$edit->section->handle.'/'.$edit->id;
-                            break;
-                    }
+                switch ($edit->getElementType()) {
+                    case 'Entry':
+                        $editUrl = '/entries/' . $edit->section->handle . '/' . $edit->id;
+                        break;
                 }
 
                 $arrReturn[] = [
@@ -111,5 +114,31 @@ class SafeDeleteService extends BaseApplicationComponent
         }
 
         return $arrReturn;
+    }
+
+    /**
+     * Get the top owner of the given element
+     *
+     * @param $element
+     * @return mixed
+     */
+    private function getTopOwner($element)
+    {
+        if (!method_exists($element, 'getOwner')) {
+            return null;
+        }
+
+        $parent = $element->getOwner();
+
+        while ($parent) {
+            if (method_exists($parent, 'getOwner')) {
+                $parent = $parent->getOwner();
+            } else {
+                // getOwner() is not possible anymore
+                break;
+            }
+        }
+
+        return $parent;
     }
 }
